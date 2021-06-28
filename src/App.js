@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import Header from "./components/Header";
-import Day from "./components/Day";
+import Header from "./components/header/Header";
+import Day from "./components/day/Day";
 
 import "./App.css";
 
@@ -10,7 +10,7 @@ function App() {
   const [currentMonth, setCurrentMonth] = useState(0);
   // initalize events variables; will save to local storage
   const [events, setEvents] = useState([]);
-  
+
   return (
     <div id="container">
       <Header />

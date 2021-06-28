@@ -1,0 +1,14 @@
+.day {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.day div {
+  width: 100px;
+  padding: 10px;
+  height: 100px;
+  box-sizing: border-box;
+  background-color: white;
+  margin: 5px;
+  box-shadow: 0px 0px 3px darkgray;
+}
