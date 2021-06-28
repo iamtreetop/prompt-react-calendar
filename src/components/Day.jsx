@@ -3,7 +3,7 @@ import React from 'react'
 const Day = () => {
   return (
     <div>
-      Day Component
+      Each Invidual Day object goes here
     </div>
   )
 }
