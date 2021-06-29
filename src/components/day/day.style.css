@@ -11,3 +11,17 @@
   box-shadow: 0px 0px 3px darkgray;
   cursor: pointer;
 }
+
+.day:hover {
+  background-color: #c3dfec;
+}
+
+.day + .currentDay {
+  background-color:#c3dfec;
+}
+
+.filler {
+  cursor: default !important;
+  background-color: whitesmoke !important;
+  box-shadow: none !important;
+}

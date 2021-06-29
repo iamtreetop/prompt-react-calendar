@@ -11,11 +11,24 @@ function App() {
   // trigger day
   const [clicked, setClicked] = useState();
   // initalize events variables; will save to local storage
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(
+    localStorage.getItem("events")
+      ? JSON.parse(localStorage.getItem("events"))
+      : []
+  );
   // store day obvjects
   const [days, setDays] = useState([]);
   // month year display date
   const [dateDisplay, setDateDisplay] = useState("");
+
+  const currentEventDate = (date) => {
+    events.find((event) => event.date === date);
+  };
+
+  // update local storage when events change
+  useEffect(() => {
+    localStorage.setItem("events", JSON.stringify(events));
+  }, [events]);
 
   useEffect(() => {
     const weekdays = [
@@ -49,6 +62,7 @@ function App() {
     });
 
     setDateDisplay(`${date.toLocaleDateString("en-us", { month: "long" })}`);
+    
     const fillerDays = weekdays.indexOf(dateString.split(", ")[0]);
 
     // build days array
@@ -62,12 +76,15 @@ function App() {
           value: i - fillerDays,
           isCurrentDay: i - fillerDays === day && currentMonth === 0,
           date: dayString,
+          event: currentEventDate(dayString),
         });
+        // filler day
       } else {
         daysArray.push({
           value: "filler",
           isCurrentDay: false,
           date: "",
+          event: null,
         });
       }
     }
