@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Header from "./components/header/Header";
 import Day from "./components/day/Day";
+import CreateAppointmentModal from "./components/create-appointment/CreateAppointmentModal";
 
 import "./App.css";
 
@@ -10,10 +11,10 @@ function App() {
   const [currentMonth, setCurrentMonth] = useState(0);
   // trigger day
   const [clicked, setClicked] = useState();
-  // initalize events variables; will save to local storage
-  const [events, setEvents] = useState(
-    localStorage.getItem("events")
-      ? JSON.parse(localStorage.getItem("events"))
+  // initalize appointments variables; will save to local storage
+  const [appointments, setAppointments] = useState(
+    localStorage.getItem("appointments")
+      ? JSON.parse(localStorage.getItem("appointments"))
       : []
   );
   // store day obvjects
@@ -21,14 +22,12 @@ function App() {
   // month year display date
   const [dateDisplay, setDateDisplay] = useState("");
 
-  const currentEventDate = (date) => {
-    events.find((event) => event.date === date);
-  };
+  const appointmentForDate = (date) => appointments.find((e) => e.date === date);
 
-  // update local storage when events change
+  // update local storage when appointments change
   useEffect(() => {
-    localStorage.setItem("events", JSON.stringify(events));
-  }, [events]);
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+  }, [appointments]);
 
   useEffect(() => {
     const weekdays = [
@@ -62,7 +61,7 @@ function App() {
     });
 
     setDateDisplay(`${date.toLocaleDateString("en-us", { month: "long" })}`);
-    
+
     const fillerDays = weekdays.indexOf(dateString.split(", ")[0]);
 
     // build days array
@@ -76,7 +75,7 @@ function App() {
           value: i - fillerDays,
           isCurrentDay: i - fillerDays === day && currentMonth === 0,
           date: dayString,
-          event: currentEventDate(dayString),
+          appointments: appointmentForDate(dayString),
         });
         // filler day
       } else {
@@ -84,45 +83,59 @@ function App() {
           value: "filler",
           isCurrentDay: false,
           date: "",
-          event: null,
+          appointments: null,
         });
       }
     }
 
     setDays(daysArray);
-  }, [events, currentMonth]);
+  }, [appointments, currentMonth]);
 
   return (
-    <div id="container">
-      <Header />
+    <>
+      <div id="container">
+        <Header />
 
-      <div id="weekdays">
-        <div>Sunday</div>
-        <div>Monday</div>
-        <div>Tuesday</div>
-        <div>Wednesday</div>
-        <div>Thursday</div>
-        <div>Friday</div>
-        <div>Saturday</div>
-      </div>
+        <div id="weekdays">
+          <div>Sunday</div>
+          <div>Monday</div>
+          <div>Tuesday</div>
+          <div>Wednesday</div>
+          <div>Thursday</div>
+          <div>Friday</div>
+          <div>Saturday</div>
+        </div>
 
-      <div id="calendar">
-        {days.map((day, idx) => {
-          return (
-            <Day
-              key={idx}
-              day={day}
-              handleClick={() => {
-                console.log("clicked!");
-                if (day.value === "filler") {
-                  setClicked(day.date);
-                }
-              }}
-            />
-          );
-        })}
+        <div id="calendar">
+          {days.map((day, idx) => {
+            return (
+              <Day
+                key={idx}
+                day={day}
+                handleClick={() => {
+                  console.log("clicked!");
+                  if (day.value !== "filler") {
+                    setClicked(day.date);
+                  }
+                }}
+              />
+            );
+          })}
+        </div>
       </div>
-    </div>
+      
+      {clicked && (
+        <CreateAppointmentModal
+          onClose={() => setClicked(null)}
+          onSave={(title) => {
+            console.log("saved appt");
+            // not grabbing all appoinbtments 
+            setAppointments([...appointments, { title, date: clicked }]);
+            setClicked(null);
+          }}
+        />
+      )}
+    </>
   );
 }
 
