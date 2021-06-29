@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./components/header/Header";
 import Day from "./components/day/Day";
 import CreateAppointmentModal from "./components/create-appointment/CreateAppointmentModal";
+import DeleteAppointmentModal from "./components/delete-appointment/DeleteAppointmentModal";
 
 import "./App.css";
 
@@ -22,7 +23,8 @@ function App() {
   // month year display date
   const [dateDisplay, setDateDisplay] = useState("");
 
-  const appointmentForDate = (date) => appointments.find((e) => e.date === date);
+  const appointmentForDate = (date) =>
+    appointments.find((e) => e.date === date);
 
   // update local storage when appointments change
   useEffect(() => {
@@ -123,14 +125,25 @@ function App() {
           })}
         </div>
       </div>
-      
-      {clicked && (
+
+      {clicked && !appointmentForDate(clicked) && (
         <CreateAppointmentModal
           onClose={() => setClicked(null)}
           onSave={(title) => {
             console.log("saved appt");
-            // not grabbing all appoinbtments 
+            // not grabbing all appoinbtments
             setAppointments([...appointments, { title, date: clicked }]);
+            setClicked(null);
+          }}
+        />
+      )}
+
+      {clicked && appointmentForDate(clicked) && (
+        <DeleteAppointmentModal
+          appointmentText={appointmentForDate(clicked).title}
+          onClose={() => setClicked(null)}
+          onDelete={() => {
+            setAppointments(appointments.filter((e) => e.date !== clicked));
             setClicked(null);
           }}
         />

@@ -4,7 +4,7 @@ import "./day.style.css"
 
 const Day = ({ day, handleClick }) => {
   const className = `day ${day.value === 'filler' ? 'filler' : ''} ${day.isCurrentDay ? 'currentDay' : ''}`
-  debugger
+  // debugger
   return (
     <div className={className} onClick={handleClick}>
       {/* don't need filler days */}
