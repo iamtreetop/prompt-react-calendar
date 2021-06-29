@@ -1,9 +1,7 @@
 .day {
   display: flex;
-  flex-wrap: wrap;
-}
-
-.day div {
+  flex-direction: column;
+  justify-content: space-between;
   width: 100px;
   padding: 10px;
   height: 100px;
@@ -11,4 +9,5 @@
   background-color: white;
   margin: 5px;
   box-shadow: 0px 0px 3px darkgray;
+  cursor: pointer;
 }

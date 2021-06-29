@@ -66,7 +66,6 @@ function App() {
       } else {
         daysArray.push({
           value: "filler",
-          event: null,
           isCurrentDay: false,
           date: "",
         });
@@ -91,7 +90,20 @@ function App() {
       </div>
 
       <div id="calendar">
-        <Day />
+        {days.map((day, idx) => {
+          return (
+            <Day
+              key={idx}
+              day={day}
+              handleClick={() => {
+                console.log("clicked!");
+                if (day.value === "filler") {
+                  setClicked(day.date);
+                }
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );

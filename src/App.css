@@ -1,7 +1,7 @@
 body {
   display: flex;
-  margin-top: 50px;
   justify-content: center;
+  margin-top: 50px;
   background-color: whitesmoke;
 }
 
@@ -10,8 +10,8 @@ body {
 }
 
 #weekdays {
-  width: 100%;
   display: flex;
+  width: 100%;
   color: blue;
 }
 
@@ -21,7 +21,8 @@ body {
 }
 
 #calendar {
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
   margin: auto;
-  display: flex;
 }
