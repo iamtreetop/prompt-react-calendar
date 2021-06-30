@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-import Header from "./components/header/Header";
-import Day from "./components/day/Day";
-import CreateAppointmentModal from "./components/create-appointment/CreateAppointmentModal";
-import DeleteAppointmentModal from "./components/delete-appointment/DeleteAppointmentModal";
+import Header from "./components/Header/Header";
+import Day from "./components/Day/Day";
+import CreateAppointmentModal from "./components/CreateAppt/CreateAppointmentModal";
+import DeleteAppointmentModal from "./components/DeleteAppt/DeleteAppointmentModal";
 
 import "./App.css";
 
@@ -22,9 +22,12 @@ function App() {
   const [days, setDays] = useState([]);
   // month year display date
   const [dateDisplay, setDateDisplay] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [error, setError] = useState('')
 
   const appointmentForDate = (date) =>
-    appointments.find((e) => e.date === date);
+    appointments.filter((e) => e.date === date);
 
   // update local storage when appointments change
   useEffect(() => {
@@ -62,7 +65,9 @@ function App() {
       day: "numeric",
     });
 
-    setDateDisplay(`${date.toLocaleDateString("en-us", { month: "long" })}`);
+    setDateDisplay(
+      `${date.toLocaleDateString("en-us", { month: "long" })} ${year}`
+    );
 
     const fillerDays = weekdays.indexOf(dateString.split(", ")[0]);
 
@@ -96,7 +101,11 @@ function App() {
   return (
     <>
       <div id="container">
-        <Header />
+        <Header
+          dateDisplay={dateDisplay}
+          onNext={() => setCurrentMonth(currentMonth + 1)}
+          onBack={() => setCurrentMonth(currentMonth - 1)}
+        />
 
         <div id="weekdays">
           <div>Sunday</div>
@@ -126,19 +135,37 @@ function App() {
         </div>
       </div>
 
-      {clicked && !appointmentForDate(clicked) && (
+      {clicked && (
         <CreateAppointmentModal
-          onClose={() => setClicked(null)}
+          currentDate={clicked}
+          appointments={appointments}
+          startTime={startTime}
+          endTime={endTime}
+          setStartTime={setStartTime}
+          setEndTime={setEndTime}
+          error={error}
+          setError={setError}
+          onClose={() => {
+              setClicked(null);
+              setError('');
+              setStartTime("");
+              setEndTime("");
+          }}
           onSave={(title) => {
             console.log("saved appt");
             // not grabbing all appoinbtments
-            setAppointments([...appointments, { title, date: clicked }]);
+            setAppointments([
+              ...appointments,
+              { title, date: clicked, startTime: startTime, endTime: endTime },
+            ]);
             setClicked(null);
+            setStartTime("");
+            setEndTime("");
           }}
         />
       )}
 
-      {clicked && appointmentForDate(clicked) && (
+      {/* {clicked && appointmentForDate(clicked) && (
         <DeleteAppointmentModal
           appointmentText={appointmentForDate(clicked).title}
           onClose={() => setClicked(null)}
@@ -147,7 +174,7 @@ function App() {
             setClicked(null);
           }}
         />
-      )}
+      )} */}
     </>
   );
 }

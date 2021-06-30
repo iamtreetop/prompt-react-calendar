@@ -2,13 +2,13 @@ import React from 'react';
 
 import './header.styles.css'
 
-const Header = () => {
+const Header = ({ dateDisplay, onNext, onBack }) => {
   return (
     <div id="header">
-      <div id="monthDisplay">MONTH YEAR</div>
+      <div id="monthDisplay">{dateDisplay}</div>
       <div>
-        <button id="backButton">Back</button>
-        <button id="nextButton">Next</button>
+        <button id="backButton" onClick={onBack}>Back</button>
+        <button id="nextButton" onClick={onNext}>Next</button>
       </div>
     </div>
   )
