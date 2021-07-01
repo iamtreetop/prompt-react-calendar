@@ -22,10 +22,12 @@ function App() {
   const [days, setDays] = useState([]);
   // month year display date
   const [dateDisplay, setDateDisplay] = useState("");
+  const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [error, setError] = useState('')
   const [viewAppointments, setViewAppointments] = useState(false);
+  const [editMode, setEditMode] = useState(null);
 
   const appointmentForDate = (date) =>
     appointments.filter((e) => e.date === date);
@@ -99,6 +101,38 @@ function App() {
     setDays(daysArray);
   }, [appointments, currentMonth]);
 
+  const onSave = () => {
+    console.log("saved appt");
+    
+    if (editMode !== null) {
+      let index = appointments.findIndex((a) => a.id === editMode);
+      setAppointments([
+        ...appointments.slice(0, index),
+        { id: editMode, title, date: clicked, startTime, endTime },
+        ...appointments.slice(index + 1)
+      ].sort((a,b) => {
+        let t1 = a.startTime.slice(0,2)
+        let t2 = b.startTime.slice(0,2)
+
+        return t1 > t2 ? 1 : -1;
+      }));
+    } else {
+      setAppointments([
+        ...appointments,
+        { id: Date.now(), title, date: clicked, startTime, endTime },
+      ].sort((a,b) => {
+        let t1 = a.startTime.slice(0,2)
+        let t2 = b.startTime.slice(0,2)
+
+        return t1 > t2 ? 1 : -1;}));
+    }
+
+    setClicked(null);
+    setEditMode(null);
+    setStartTime("");
+    setEndTime("");
+  }
+
   const deleteAppt = (id) => {
     let apptList = appointments.filter((a) => a.id !== id)
     setAppointments(apptList);
@@ -150,6 +184,8 @@ function App() {
         <CreateAppointmentModal
           currentDate={clicked}
           appointments={appointments}
+          title={title}
+          setTitle={setTitle}
           startTime={startTime}
           endTime={endTime}
           setStartTime={setStartTime}
@@ -162,17 +198,8 @@ function App() {
             setStartTime("");
             setEndTime("");
           }}
-          onSave={(title) => {
-            console.log("saved appt");
-            // not grabbing all appoinbtments
-            setAppointments([
-              ...appointments,
-              { id: Date.now(), title, date: clicked, startTime, endTime },
-            ]);
-            setClicked(null);
-            setStartTime("");
-            setEndTime("");
-          }}
+          onSave={onSave}
+          setEditMode={setEditMode}
         />
       )}
 
@@ -181,6 +208,12 @@ function App() {
           appointments={appointments}
           onClose={() => setViewAppointments(false)}
           onDelete={deleteAppt}
+          setTitle={setTitle}
+          setClicked={setClicked}
+          setStartTime={setStartTime}
+          setEndTime={setEndTime}
+          setViewAppointments={setViewAppointments}
+          setEditMode={setEditMode}
         />
       )}
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './appointmentModal.styles.css';
 
-const AppointmentModal = ({appointments, onClose, onDelete}) => {
+const AppointmentModal = ({appointments, onClose, onDelete, setTitle, setStartTime, setEndTime, setClicked, setViewAppointments, setEditMode }) => {
   return (
     <>
       <div id="newAppointmentModal">
@@ -14,7 +14,14 @@ const AppointmentModal = ({appointments, onClose, onDelete}) => {
               <div id="appointment-name">
                 {appt.title} @ {appt.startTime}
               </div>
-              <button id="editButton">Edit</button>
+              <button id="editButton" onClick={() => {
+                setClicked(appt.date);
+                setTitle(appt.title);
+                setStartTime(appt.startTime);
+                setEndTime(appt.endTime);
+                setViewAppointments(false);
+                setEditMode(appt.id);
+              }}>Edit</button>
               <button id="deleteButton" onClick={() => onDelete(appt.id)}>Delete</button>
             </div>
           )

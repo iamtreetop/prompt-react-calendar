@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './createAppointment.styles.css'
 
-const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setStartTime, endTime, setEndTime, currentDate, error, setError }) => {
-  const [title, setTitle] = useState('');
+const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setStartTime, endTime, setEndTime, currentDate, error, setError, title, setTitle }) => {
 
   const checkAvailability = (startTime, endTime) => {
     let closeable = true;
