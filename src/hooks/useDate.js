@@ -18,7 +18,6 @@ export const useDate = (appointments, currentMonth) => {
       "Thursday",
       "Friday",
       "Saturday",
-      "Sunday",
     ];
     const date = new Date();
 
@@ -31,8 +30,12 @@ export const useDate = (appointments, currentMonth) => {
     const year = date.getFullYear();
 
     const firstOfMonth = new Date(year, month, 1);
+    // month + 1, 0 goes to last day of last month
+    // number of squares
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
+
+    // Ex. Friday, 1/1/2021
     const dateString = firstOfMonth.toLocaleDateString("en-us", {
       weekday: "long",
       year: "numeric",

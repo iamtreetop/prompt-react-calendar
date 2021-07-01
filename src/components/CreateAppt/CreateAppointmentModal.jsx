@@ -2,12 +2,12 @@ import React from 'react';
 
 import './createAppointment.styles.css'
 
-const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setStartTime, endTime, setEndTime, currentDate, error, setError, title, setTitle }) => {
+const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setStartTime, endTime, setEndTime, currentDay, error, setError, title, setTitle }) => {
 
   const checkAvailability = (startTime, endTime) => {
     let closeable = true;
     // filter for appointments on current date
-    const filtered = appointments.filter((e) => e.date === currentDate)
+    const filtered = appointments.filter((e) => e.date === currentDay)
     filtered.forEach((a) => {
       if (startTime < a.endTime && endTime >= a.startTime) {
         setError("Appointment not available.  Try Again")

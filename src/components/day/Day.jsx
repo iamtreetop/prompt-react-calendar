@@ -8,17 +8,12 @@ const Day = ({ day, handleClick }) => {
 
   return (
     <div className={className} onClick={handleClick}>
-      {/* don't need filler days */}
       {day.value !== 'filler' ? day.value : ''}
-
-      {/* render appointment*/}
-      {
-        day.appointments?.map((day, idx) => {
-          return (
-            <div key={idx} className='appointment'>{formatTime(day.startTime)} {day.title}</div>
-          )
-        })
-      }
+      {day.appointments?.map((day, idx) => {
+        return (
+          <div key={idx} className='appointment'>{formatTime(day.startTime)} {day.title}</div>
+        )
+      })}
     </div>
   )
 }

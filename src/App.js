@@ -38,6 +38,7 @@ function App() {
   const onSave = () => {
     console.log("saved appt");
 
+    // editing
     if (editMode !== null) {
       let index = appointments.findIndex((a) => a.id === editMode);
       setAppointments(
@@ -52,6 +53,7 @@ function App() {
           return t1 > t2 ? 1 : -1;
         })
       );
+      // regular save
     } else {
       setAppointments(
         [
@@ -131,7 +133,7 @@ function App() {
 
       {currentDay && (
         <CreateAppointmentModal
-          currentDate={currentDay}
+          currentDay={currentDay}
           appointments={appointments}
           title={title}
           setTitle={setTitle}

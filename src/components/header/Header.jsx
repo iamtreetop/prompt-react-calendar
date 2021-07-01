@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './header.styles.css'
+import './header.styles.css';
 
 const Header = ({ dateDisplay, onNext, onBack, setViewAppointments }) => {
   return (
