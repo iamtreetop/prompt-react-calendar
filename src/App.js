@@ -25,7 +25,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
   const [viewAppointments, setViewAppointments] = useState(false);
   const [editMode, setEditMode] = useState(null);
 
@@ -103,63 +103,79 @@ function App() {
 
   const onSave = () => {
     console.log("saved appt");
-    
+
     if (editMode !== null) {
       let index = appointments.findIndex((a) => a.id === editMode);
-      setAppointments([
-        ...appointments.slice(0, index),
-        { id: editMode, title, date: clicked, startTime, endTime },
-        ...appointments.slice(index + 1)
-      ].sort((a,b) => {
-        let t1 = a.startTime.slice(0,2)
-        let t2 = b.startTime.slice(0,2)
+      setAppointments(
+        [
+          ...appointments.slice(0, index),
+          { id: editMode, title, date: clicked, startTime, endTime },
+          ...appointments.slice(index + 1),
+        ].sort((a, b) => {
+          let t1 = a.startTime.slice(0, 2);
+          let t2 = b.startTime.slice(0, 2);
 
-        return t1 > t2 ? 1 : -1;
-      }));
+          return t1 > t2 ? 1 : -1;
+        })
+      );
     } else {
-      setAppointments([
-        ...appointments,
-        { id: Date.now(), title, date: clicked, startTime, endTime },
-      ].sort((a,b) => {
-        let t1 = a.startTime.slice(0,2)
-        let t2 = b.startTime.slice(0,2)
+      setAppointments(
+        [
+          ...appointments,
+          { id: Date.now(), title, date: clicked, startTime, endTime },
+        ].sort((a, b) => {
+          let t1 = a.startTime.slice(0, 2);
+          let t2 = b.startTime.slice(0, 2);
 
-        return t1 > t2 ? 1 : -1;}));
+          return t1 > t2 ? 1 : -1;
+        })
+      );
     }
 
     setClicked(null);
     setEditMode(null);
     setStartTime("");
     setEndTime("");
-  }
+    setTitle("");
+  };
 
   const deleteAppt = (id) => {
-    let apptList = appointments.filter((a) => a.id !== id)
+    let apptList = appointments.filter((a) => a.id !== id);
     setAppointments(apptList);
-  }
+  };
 
   return (
     <>
       <div id="container">
-        <div>
-          <button onClick={() => setViewAppointments(true)}>
-            My Appointments
-          </button>
-          <Header
-            dateDisplay={dateDisplay}
-            onNext={() => setCurrentMonth(currentMonth + 1)}
-            onBack={() => setCurrentMonth(currentMonth - 1)}
-          />
-        </div>
+        <Header
+          dateDisplay={dateDisplay}
+          onNext={() => setCurrentMonth(currentMonth + 1)}
+          onBack={() => setCurrentMonth(currentMonth - 1)}
+          setViewAppointments={setViewAppointments}
+        />
 
         <div id="weekdays">
-          <div>Sunday</div>
-          <div>Monday</div>
-          <div>Tuesday</div>
-          <div>Wednesday</div>
-          <div>Thursday</div>
-          <div>Friday</div>
-          <div>Saturday</div>
+          <div>
+            <b>Sunday</b>
+          </div>
+          <div>
+            <b>Monday</b>
+          </div>
+          <div>
+            <b>Tuesday</b>
+          </div>
+          <div>
+            <b>Wednesday</b>
+          </div>
+          <div>
+            <b>Thursday</b>
+          </div>
+          <div>
+            <b>Friday</b>
+          </div>
+          <div>
+            <b>Saturday</b>
+          </div>
         </div>
 
         <div id="calendar">
@@ -216,17 +232,6 @@ function App() {
           setEditMode={setEditMode}
         />
       )}
-
-      {/* {clicked && appointmentForDate(clicked) && (
-        <DeleteAppointmentModal
-          appointmentText={appointmentForDate(clicked).title}
-          onClose={() => setClicked(null)}
-          onDelete={() => {
-            setAppointments(appointments.filter((a) => a.date !== clicked));
-            setClicked(null);
-          }}
-        />
-      )} */}
     </>
   );
 }

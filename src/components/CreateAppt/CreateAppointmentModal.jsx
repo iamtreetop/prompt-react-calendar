@@ -9,13 +9,18 @@ const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setS
     // filter for appointments on current date
     const filtered = appointments.filter((e) => e.date === currentDate)
     filtered.forEach((a) => {
-      if (startTime <= a.endTime && endTime >= a.startTime) {
+      if (startTime < a.endTime && endTime >= a.startTime) {
         setError("Appointment not available.  Try Again")
         closeable = false;
       }
 
       if (startTime >= endTime) {
         setError("Invalid Appointment.  Try Again")
+        closeable = false;
+      }
+
+      if (startTime.length === 0 || endTime.length === 0) {
+        setError("Invalid Times.  Try Again")
         closeable = false;
       }
     })
@@ -25,7 +30,7 @@ const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setS
   return (
     <>
       <div id="newAppointmentModal">
-        <h2>New Appointment</h2>
+        <h2><i>New Appointment</i></h2>
 
         <input 
           id="appointmentTitleInput" 
@@ -68,7 +73,7 @@ const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setS
           onClick={onClose}
           id="cancelButton">Cancel</button>
 
-        <div id="error">{error}</div>
+        <div id="error"><i>{error}</i></div>
       </div>
 
       <div id="modalBg"></div>
