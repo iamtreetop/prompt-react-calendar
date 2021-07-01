@@ -25,6 +25,7 @@ function App() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [error, setError] = useState('')
+  const [apptButton, setApptButton] = useState(false);
 
   const appointmentForDate = (date) =>
     appointments.filter((e) => e.date === date);
@@ -74,7 +75,7 @@ function App() {
     // build days array
     const daysArray = [];
     for (let i = 1; i <= fillerDays + daysInMonth; i++) {
-      const dayString = `${month + 1} / ${i - fillerDays} / ${year}`;
+      const dayString = `${month + 1}/${i - fillerDays}/${year}`;
 
       if (i > fillerDays) {
         // not filler day; push day objects
@@ -101,11 +102,14 @@ function App() {
   return (
     <>
       <div id="container">
-        <Header
-          dateDisplay={dateDisplay}
-          onNext={() => setCurrentMonth(currentMonth + 1)}
-          onBack={() => setCurrentMonth(currentMonth - 1)}
-        />
+        <div>
+          <button>My Appointments</button>
+          <Header
+            dateDisplay={dateDisplay}
+            onNext={() => setCurrentMonth(currentMonth + 1)}
+            onBack={() => setCurrentMonth(currentMonth - 1)}
+          />
+        </div>
 
         <div id="weekdays">
           <div>Sunday</div>
@@ -135,7 +139,7 @@ function App() {
         </div>
       </div>
 
-      {clicked && (
+      {clicked && !appointmentForDate(clicked) && (
         <CreateAppointmentModal
           currentDate={clicked}
           appointments={appointments}
@@ -156,7 +160,7 @@ function App() {
             // not grabbing all appoinbtments
             setAppointments([
               ...appointments,
-              { title, date: clicked, startTime: startTime, endTime: endTime },
+              { title, date: clicked, startTime, endTime },
             ]);
             setClicked(null);
             setStartTime("");
@@ -165,12 +169,14 @@ function App() {
         />
       )}
 
+
+
       {/* {clicked && appointmentForDate(clicked) && (
         <DeleteAppointmentModal
           appointmentText={appointmentForDate(clicked).title}
           onClose={() => setClicked(null)}
           onDelete={() => {
-            setAppointments(appointments.filter((e) => e.date !== clicked));
+            setAppointments(appointments.filter((a) => a.date !== clicked));
             setClicked(null);
           }}
         />

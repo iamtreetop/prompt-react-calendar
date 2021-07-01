@@ -6,9 +6,8 @@ const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setS
   const [title, setTitle] = useState('');
 
   const checkAvailability = (startTime, endTime) => {
-    // filter current date
-    debugger
     let closeable = true;
+    // filter for appointments on current date
     const filtered = appointments.filter((e) => e.date === currentDate)
     filtered.forEach((a) => {
       if (startTime <= a.endTime && endTime >= a.startTime) {
@@ -34,15 +33,17 @@ const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setS
           placeholder="Appointment Title" 
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
-        <label for="appt">Choose a time for your meeting:<br/></label> 
-        
+        <label>Choose a time for your meeting:</label> 
+        <br/>
         <input 
           type='time'
           id="appointmentTime"
           placeholder="Start Time" 
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
+          required
         /> 
 
         <input 
@@ -51,11 +52,11 @@ const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setS
           placeholder="End Time" 
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
-        /> <br/>
-
+          required
+        /> 
+        <br/>
         <button 
           onClick={() => {
-            debugger
             if (checkAvailability(startTime, endTime)) {
               if (title) {
               onSave(title);
@@ -68,11 +69,8 @@ const CreateAppointmentModal = ({ onSave, onClose, appointments, startTime, setS
           onClick={onClose}
           id="cancelButton">Cancel</button>
 
-        <div>{error}</div>
+        <div id="error">{error}</div>
       </div>
-
-      
-      
 
       <div id="modalBg"></div>
     </>

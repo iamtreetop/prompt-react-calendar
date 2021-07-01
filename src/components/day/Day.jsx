@@ -14,7 +14,7 @@ const Day = ({ day, handleClick }) => {
       {
         day.appointments?.map((day, idx) => {
           return (
-            <div className='appointment'>{day.title}</div>
+            <div key={idx} className='appointment'>{day.startTime} {day.title}</div>
           )
         })
       }

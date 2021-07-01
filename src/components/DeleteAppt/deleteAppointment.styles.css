@@ -21,3 +21,8 @@
 #closeButton {
   background-color: #6e7ba3;
 }
+
+#error {
+  color: red;
+  margin-top: 10px;
+}
