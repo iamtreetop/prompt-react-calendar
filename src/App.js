@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./components/Header/Header";
 import Day from "./components/Day/Day";
 import CreateAppointmentModal from "./components/CreateAppt/CreateAppointmentModal";
-import DeleteAppointmentModal from "./components/DeleteAppt/DeleteAppointmentModal";
+import AppointmentModal from "./components/ApptModal/AppointmentModal";
 
 import "./App.css";
 
@@ -25,7 +25,7 @@ function App() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [error, setError] = useState('')
-  const [apptButton, setApptButton] = useState(false);
+  const [viewAppointments, setViewAppointments] = useState(false);
 
   const appointmentForDate = (date) =>
     appointments.filter((e) => e.date === date);
@@ -99,11 +99,18 @@ function App() {
     setDays(daysArray);
   }, [appointments, currentMonth]);
 
+  const deleteAppt = (id) => {
+    let apptList = appointments.filter((a) => a.id !== id)
+    setAppointments(apptList);
+  }
+
   return (
     <>
       <div id="container">
         <div>
-          <button>My Appointments</button>
+          <button onClick={() => setViewAppointments(true)}>
+            My Appointments
+          </button>
           <Header
             dateDisplay={dateDisplay}
             onNext={() => setCurrentMonth(currentMonth + 1)}
@@ -139,7 +146,7 @@ function App() {
         </div>
       </div>
 
-      {clicked && !appointmentForDate(clicked) && (
+      {clicked && (
         <CreateAppointmentModal
           currentDate={clicked}
           appointments={appointments}
@@ -150,17 +157,17 @@ function App() {
           error={error}
           setError={setError}
           onClose={() => {
-              setClicked(null);
-              setError('');
-              setStartTime("");
-              setEndTime("");
+            setClicked(null);
+            setError("");
+            setStartTime("");
+            setEndTime("");
           }}
           onSave={(title) => {
             console.log("saved appt");
             // not grabbing all appoinbtments
             setAppointments([
               ...appointments,
-              { title, date: clicked, startTime, endTime },
+              { id: Date.now(), title, date: clicked, startTime, endTime },
             ]);
             setClicked(null);
             setStartTime("");
@@ -169,7 +176,13 @@ function App() {
         />
       )}
 
-
+      {viewAppointments && (
+        <AppointmentModal
+          appointments={appointments}
+          onClose={() => setViewAppointments(false)}
+          onDelete={deleteAppt}
+        />
+      )}
 
       {/* {clicked && appointmentForDate(clicked) && (
         <DeleteAppointmentModal

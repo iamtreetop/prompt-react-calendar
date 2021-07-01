@@ -1,0 +1,24 @@
+#newAppointmentModal {
+  z-index: 15;
+  padding: 25px;
+  background-color: #e8f4fa;
+  box-shadow: 0px 0px 3px black;
+  border-radius: 5px;
+  width: 350px;
+  top: 100px;
+  left: calc(50% - 175px);
+  position: absolute;
+  font-family: sans-serif;
+}
+
+.appointment-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#deleteButton {
+  background-color: #d45a5a;
+}
+#editButton {
+  background-color: #6e7ba3;
+}
